@@ -4,15 +4,15 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import Garage from './components/Garage/Garage';
 import Winners from './components/Winners/Winners';
-import Navigation from './components/Common/Navigation';
 import './App.css';
+import Header from './components/Header/Header';
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <div className="App">
-          <Navigation />
+          <Header />
           <Routes>
             <Route path="/" element={<Garage />} />
             <Route path="/garage" element={<Garage />} />
