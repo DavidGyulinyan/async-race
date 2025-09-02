@@ -32,6 +32,14 @@ export const createCar = createAsyncThunk(
   }
 );
 
+export const deleteCar = createAsyncThunk(
+  'garage/deleteCar',
+  async (id: number) => {
+    await garageApi.deleteCar(id);
+    return id;
+  }
+);
+
 const garageSlice = createSlice({
   name: 'garage',
   initialState,
@@ -51,6 +59,10 @@ const garageSlice = createSlice({
     builder.addCase(createCar.fulfilled, (state, action) => {
       state.cars.push(action.payload);
       state.totalCount += 1;
+    });
+    builder.addCase(deleteCar.fulfilled, (state, action) => {
+      state.cars = state.cars.filter(car => car.id !== action.payload);
+      state.totalCount -= 1;
     });
   },
 });
