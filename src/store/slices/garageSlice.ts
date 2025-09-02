@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Car } from '../../types';
 import { garageApi } from '../../services/api';
+import { CAR_BRANDS, CAR_MODELS, COLORS } from '../../constants';
 
 interface GarageState {
   cars: Car[];
@@ -48,6 +49,22 @@ export const updateCar = createAsyncThunk(
   }
 );
 
+export const generateCars = createAsyncThunk(
+  'garage/generateCars',
+  async () => {
+    const carsToCreate: Omit<Car, 'id'>[] = [];
+    for (let i = 0; i < 100; i++) {
+      const brand = CAR_BRANDS[Math.floor(Math.random() * CAR_BRANDS.length)];
+      const model = CAR_MODELS[Math.floor(Math.random() * CAR_MODELS.length)];
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const name = `${brand} ${model}`;
+      carsToCreate.push({ name, color });
+    }
+    const createdCars = await Promise.all(carsToCreate.map(car => garageApi.createCar(car)));
+    return createdCars;
+  }
+);
+
 const garageSlice = createSlice({
   name: 'garage',
   initialState,
@@ -77,6 +94,10 @@ const garageSlice = createSlice({
       if (index !== -1) {
         state.cars[index] = action.payload;
       }
+    });
+    builder.addCase(generateCars.fulfilled, (state, action) => {
+      state.cars.push(...action.payload);
+      state.totalCount += action.payload.length;
     });
   },
 });
