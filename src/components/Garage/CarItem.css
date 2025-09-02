@@ -13,8 +13,18 @@
 
 .car-info {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
+  gap: 5px;
+}
+
+.race-track{
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  border-radius: 10px;
+  border: 1px dashed #ccc;
+  padding: 0 4px;
 }
 
 .car-icon {
