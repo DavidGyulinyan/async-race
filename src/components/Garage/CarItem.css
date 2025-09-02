@@ -63,7 +63,7 @@
 .race-track{
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   border-radius: 10px;
   border: 1px dashed #ccc;
   padding: 0 4px;
