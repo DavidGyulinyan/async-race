@@ -3,9 +3,11 @@ import { Car, Engine, SortBy, SortOrder, Winner } from "../types";
 const BASE_URL = 'http://localhost:3000';
 
 export const garageApi = {
-    getCars:async (page: number, limit: number = 7):Promise<Car[]> => {
-        const response = await fetch(`${BASE_URL}/garage/cars?page=${page}&limit=${limit}`);
-        return response.json();
+    getCars:async (page: number, limit: number = 7):Promise<{cars: Car[], totalCount: number}> => {
+        const response = await fetch(`${BASE_URL}/garage?_page=${page}&_limit=${limit}`);
+        const cars = await response.json();
+        const totalCount = parseInt(response.headers.get('X-Total-Count') || '0');
+        return { cars, totalCount };
     },
 
     getCar:async(id:number):Promise<Car> => {
