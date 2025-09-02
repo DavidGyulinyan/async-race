@@ -5,10 +5,52 @@
   border-radius: 5px;
 }
 
+.car-item.selected {
+  border-color: #007bff;
+  background-color: #f8f9fa;
+}
+
 .car-controls {
   display: flex;
   gap: 5px;
   margin-bottom: 10px;
+}
+
+.edit-form {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex: 1;
+}
+
+.edit-form input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.edit-form input[type="text"] {
+  flex: 1;
+}
+
+.edit-form input[type="color"] {
+  width: 50px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-form button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.edit-form button:hover {
+  background-color: #f0f0f0;
 }
 
 .car-info {
@@ -36,11 +78,20 @@
   .car-item {
     padding: 5px;
   }
-  
+
   .car-controls {
     flex-direction: column;
   }
-  
+
+  .edit-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-form input[type="text"] {
+    margin-bottom: 5px;
+  }
+
   .car-icon {
     font-size: 1.5rem;
   }

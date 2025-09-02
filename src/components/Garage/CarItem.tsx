@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Car } from "../../types";
 import { useRace } from "../../hooks/useRace";
+import { updateCar } from "../../store/slices/garageSlice";
+import { AppDispatch, RootState } from "../../store";
 import "./CarItem.css";
 
 interface CarItemProps {
   car: Car;
-  onSelect: (car: Car) => void;
+  onSelect: (car: Car | null) => void;
   onDelete: (id: number) => void;
 }
 
 const CarItem: React.FC<CarItemProps> = ({ car, onSelect, onDelete }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { raceStatus, startCar, stopCar } = useRace();
+  const selectedCar = useSelector((state: RootState) => state.garage.selectedCar);
   const status = raceStatus.get(car.id);
+  const isSelected = selectedCar?.id === car.id;
+
+  const [editName, setEditName] = useState(car.name);
+  const [editColor, setEditColor] = useState(car.color);
+
+  useEffect(() => {
+    if (isSelected) {
+      setEditName(car.name);
+      setEditColor(car.color);
+    }
+  }, [isSelected, car.name, car.color]);
 
   const handleStart = async () => {
     await startCar(car);
@@ -21,12 +37,39 @@ const CarItem: React.FC<CarItemProps> = ({ car, onSelect, onDelete }) => {
     await stopCar(car.id);
   };
 
+  const handleSave = () => {
+    dispatch(updateCar({ id: car.id, car: { name: editName, color: editColor } }));
+    onSelect(null as any);
+  };
+
+  const handleCancel = () => {
+    onSelect(null as any);
+  };
+
   return (
-    <div className="car-item">
+    <div className={`car-item ${isSelected ? 'selected' : ''}`}>
       <div className="car-controls">
         <button onClick={() => onSelect(car)}>Select</button>
         <button onClick={() => onDelete(car.id)}>Delete</button>
-        <span>{car.name}</span>
+        {isSelected ? (
+          <div className="edit-form">
+            <input
+              type="text"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              placeholder="Car name"
+            />
+            <input
+              type="color"
+              value={editColor}
+              onChange={(e) => setEditColor(e.target.value)}
+            />
+            <button onClick={handleSave}>Save</button>
+            <button onClick={handleCancel}>Cancel</button>
+          </div>
+        ) : (
+          <span>{car.name}</span>
+        )}
       </div>
       <div className="car-info">
         <button onClick={handleStart} disabled={status !== undefined}>
@@ -39,7 +82,7 @@ const CarItem: React.FC<CarItemProps> = ({ car, onSelect, onDelete }) => {
           <div
             className="car-icon"
             style={{
-              color: car.color,
+              color: isSelected ? editColor : car.color,
               transform: status
                 ? `translateX(${status.position}%)`
                 : "translateX(0)",

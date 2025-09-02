@@ -40,6 +40,14 @@ export const deleteCar = createAsyncThunk(
   }
 );
 
+export const updateCar = createAsyncThunk(
+  'garage/updateCar',
+  async ({ id, car }: { id: number; car: Omit<Car, 'id'> }) => {
+    const response = await garageApi.updateCar(id, car);
+    return response;
+  }
+);
+
 const garageSlice = createSlice({
   name: 'garage',
   initialState,
@@ -47,7 +55,7 @@ const garageSlice = createSlice({
     setPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
     },
-    selectCar: (state, action: PayloadAction<Car>) => {
+    selectCar: (state, action: PayloadAction<Car | null>) => {
       state.selectedCar = action.payload;
     },
   },
@@ -63,6 +71,12 @@ const garageSlice = createSlice({
     builder.addCase(deleteCar.fulfilled, (state, action) => {
       state.cars = state.cars.filter(car => car.id !== action.payload);
       state.totalCount -= 1;
+    });
+    builder.addCase(updateCar.fulfilled, (state, action) => {
+      const index = state.cars.findIndex(car => car.id === action.payload.id);
+      if (index !== -1) {
+        state.cars[index] = action.payload;
+      }
     });
   },
 });
