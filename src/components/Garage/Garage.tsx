@@ -28,12 +28,22 @@ const Garage: React.FC = () => {
     }
   };
 
-  const handleDeleteCar = (id: number) => {
-    dispatch(deleteCar(id));
+  const handleDeleteCar = async (id: number) => {
+    await dispatch(deleteCar(id));
+
+    await dispatch(fetchCars(currentPage));
+
+    const itemsPerPage = 7;
+    const maxPage = Math.ceil((totalCount - 1) / itemsPerPage);
+
+    if (currentPage > maxPage && currentPage > 1) {
+      dispatch(setPage(maxPage));
+    }
   };
 
-  const handleGenerateCars = () => {
-    dispatch(generateCars());
+  const handleGenerateCars = async () => {
+    await dispatch(generateCars());
+    dispatch(fetchCars(currentPage));
   };
   
   return (
