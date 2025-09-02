@@ -4,7 +4,7 @@ import CarItem from './CarItem';
 
 interface CarListProps {
   cars: Car[];
-  onSelect: (car: Car) => void;
+  onSelect: (car: Car | null) => void;
   onDelete: (id: number) => void;
 }
 

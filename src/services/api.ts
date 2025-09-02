@@ -29,6 +29,15 @@ export const garageApi = {
             method: 'DELETE',
         });
     },
+
+    updateCar: async (id: number, car: Omit<Car, 'id'>): Promise<Car> => {
+        const response = await fetch(`${BASE_URL}/garage/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(car),
+        });
+        return await response.json();
+    },
 }
 
 export const engineAPI = {

@@ -20,8 +20,12 @@ const Garage: React.FC = () => {
     dispatch(setPage(page));
   };
 
-  const handleSelectCar = (car: Car) => {
-    dispatch(selectCar(car));
+  const handleSelectCar = (car: Car | null) => {
+    if (car) {
+      dispatch(selectCar(car));
+    } else {
+      dispatch(selectCar(null));
+    }
   };
 
   const handleDeleteCar = (id: number) => {
