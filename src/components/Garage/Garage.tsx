@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { fetchCars, setPage, selectCar } from '../../store/slices/garageSlice';
+import { fetchCars, setPage, selectCar, deleteCar } from '../../store/slices/garageSlice';
 import { Car } from '../../types';
 import CarForm from './CarForm';
 import CarList from './CarList';
@@ -25,8 +25,7 @@ const Garage: React.FC = () => {
   };
 
   const handleDeleteCar = (id: number) => {
-    // TODO: Implement delete functionality
-    console.log('Delete car', id);
+    dispatch(deleteCar(id));
   };
   
   return (

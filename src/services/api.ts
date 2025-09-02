@@ -23,6 +23,12 @@ export const garageApi = {
         });
         return await response.json();
   },
+
+    deleteCar: async (id: number): Promise<void> => {
+        await fetch(`${BASE_URL}/garage/${id}`, {
+            method: 'DELETE',
+        });
+    },
 }
 
 export const engineAPI = {
