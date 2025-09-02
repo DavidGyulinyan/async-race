@@ -63,10 +63,15 @@
 .race-track{
   width: 100%;
   display: flex;
-  justify-content: start;
+  justify-content: space-around;
   border-radius: 10px;
   border: 1px dashed #ccc;
   padding: 0 4px;
+}
+
+.car-item__finish-line {
+  font-size: 2rem;
+  z-index: 1;
 }
 
 .car-icon {
