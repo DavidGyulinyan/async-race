@@ -9,6 +9,10 @@ interface CarListProps {
 }
 
 const CarList: React.FC<CarListProps> = ({ cars, onSelect, onDelete }) => {
+  if (!Array.isArray(cars)) {
+    return <div>Loading cars...</div>;
+  }
+
   return (
     <div className="car-list">
       {cars.map((car) => (
