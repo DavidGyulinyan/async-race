@@ -20,7 +20,7 @@ export const fetchCars = createAsyncThunk(
   'garage/fetchCars',
   async (page: number) => {
     const response = await garageApi.getCars(page);
-    return { cars: response, totalCount: 100 };
+    return response;
   }
 );
 
